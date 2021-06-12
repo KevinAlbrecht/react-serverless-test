@@ -1,0 +1,33 @@
+.account-card__container{
+    width: 200px;
+    flex: 0.5;
+}
+
+.account-card__container .account-card__sub{
+    width: 300px;
+    margin: auto;
+}
+
+.account-card__container .account-card__sub p{
+    word-break: break-all;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .rotating-loader {
+	font-size: 30px;
+    animation: loader-lolling infinite 1s linear;
+  }
+}
+
+@keyframes loader-lolling {
+	0% {
+	transform: rotate(0deg)
+	}
+	50%{
+	transform: rotate(90deg)
+	}
+	100%{
+	transform: rotate(0deg)
+	}
+}
