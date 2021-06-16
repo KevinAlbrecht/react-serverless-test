@@ -3,7 +3,6 @@ import 'firebase/auth';
 import 'firebase/analytics';
 
 const firebaseConfig = {
-  
 };
 
 firebase.initializeApp(firebaseConfig);

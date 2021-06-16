@@ -1,0 +1,15 @@
+.home__wrapper{
+	display:flex;
+	height: 600px;	
+width: 100%;
+}
+
+.home__wrapper #home__campains{
+	flex:0.5;
+	border:1px solid red;
+}
+
+.home__wrapper #home__map{
+	flex:0.5;
+	border:1px solid purple;
+}

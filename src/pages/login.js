@@ -1,30 +1,34 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { appReducerActions } from '../store/app-reducer';
 import { useAppDispatch } from '../contexts/app-context';
 import { getRedirectResultAsync } from '../http/google-signin';
+import { getUserOrganizations } from '../http/api';
+
 import userProjection from '../http/projections/user-projection';
 import GoogleLogin from '../components/ggle-login';
 
 export function Login() {
-  const history = useHistory();
-  const callback = () => history.push('/home');
-  const appDispatch = useAppDispatch();
+  const callback = () => {};
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getRedirectResultAsync()
-      .then((result) => {
-        if (result && result.user) {
-          appDispatch({
-            type: appReducerActions.userLoaded,
-            payload: userProjection(result),
+    (async () => {
+      try {
+        const userInfos = await getRedirectResultAsync();
+        if (userInfos.user) {
+          const user = userProjection(userInfos);
+          localStorage.setItem('user', JSON.stringify(user));
+          const organizations = await getUserOrganizations();
+          dispatch({
+            type: appReducerActions.userAndOrganizationsLoaded,
+            payload: { user: user, organizations },
           });
           callback();
         }
-      })
-      .catch((err) => {
-        appDispatch({ type: appReducerActions.userError, payload: err });
-      });
+      } catch (exception) {
+        console.log('exception SignInAndGetUserInfos', exception);
+      }
+    })();
   }, []);
 
   return (

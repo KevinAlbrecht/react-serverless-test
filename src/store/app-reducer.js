@@ -30,6 +30,23 @@ const appReducer = (state, action) => {
       return { ...state, notification: action.payload };
     case appReducerActions.signOut:
       return { ...state, user: { ...defaultState.user, isLoading: false } };
+    case appReducerActions.organizationLoaded:
+      const newState = { ...state };
+      Object.assign(newState.user.organizations, action.payload);
+      return newState;
+    case appReducerActions.currentOrganizationSet:
+      return { ...state, currentOrganization: action.payload };
+    case appReducerActions.userAndOrganizationsLoaded:
+      const user = {
+        isLoading: false,
+        error: null,
+        ...action.payload.user,
+        organizations: action.payload.organizations,
+      };
+      let currentOrganization = state.currentOrganization;
+      if (action.payload.organizations.length > 0)
+        currentOrganization = action.payload.organizations[0].id;
+      return { ...state, user, currentOrganization };
   }
 };
 
@@ -39,6 +56,9 @@ export const appReducerActions = {
   userError: 'USER_ERROR',
   notify: 'NEW_NOTIFICATION',
   signOut: 'SIGNOUT',
+  organizationLoaded: 'ORG_LOADED',
+  userAndOrganizationsLoaded: 'ORG_USR_LOADED',
+  //   setCurrentOrganization: 'ORG_SET',
 };
 
 export default appReducer;

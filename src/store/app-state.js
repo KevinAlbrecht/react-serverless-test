@@ -4,6 +4,8 @@ export default {
     fullName: '',
     picture: '',
     token: '',
+    organizations:  [],
   },
+  currentOrganization: '',
   notification: null,
 };

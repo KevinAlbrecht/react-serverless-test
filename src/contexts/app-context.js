@@ -1,38 +1,32 @@
 import React, { useContext } from 'react';
-import appReducer from '../store/app-reducer';
-import useThunkReducer from '../store/app-thunk-reducer';
 import defaultAppState from '../store/app-state';
 
-//Context Provider
+// Objet context
 const AppStateContext = React.createContext(defaultAppState);
 //
 
-// Custom hook pour acceder à toutes les propriétées globales
+// Accesseur pour le state global
 const useAppStateContext = () => useContext(AppStateContext);
 
-// custom hook pour acceder seulement au user du context global
+// Accesseur pour la methode dispatch du context;
+const useAppDispatch = () => {
+  //originally written like following, but waring "value" never used popped out
+  // const [value, dispatch] = useAppStateContext();
+  const ctx = useAppStateContext();
+  return ctx[1];
+};
+
+// Accesseur pour la propriété user du context
 const useUserContext = () => {
   const [context] = useAppStateContext();
   return context.user;
 };
 
-// custom hook pour acceder au dispatcher lié au context;
-const useAppDispatch = () => {
-  const [value, dispatch] = useAppStateContext();
-  return dispatch;
+// Accesseur pour l'organization courante;
+const useCurrentOrgContext = () => {
+  const [state] = useAppStateContext();
+  return state.currentOrganization;
 };
 
-// Component wrapper -> pas forcément utile de rajouter un noeud mais bon ...
-const AppContext = ({ children }) => {
-  const contextValue = useThunkReducer(appReducer, defaultAppState);
-
-  return (
-    <AppStateContext.Provider value={contextValue}>
-      {children}
-    </AppStateContext.Provider>
-  );
-};
-//
-
-export default AppContext;
-export { useUserContext, useAppDispatch };
+export default AppStateContext;
+export { useUserContext, useAppDispatch, useCurrentOrgContext };
